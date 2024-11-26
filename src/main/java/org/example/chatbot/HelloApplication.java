@@ -9,6 +9,7 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Random;
 
 public class HelloApplication extends Application {
 
@@ -103,7 +104,7 @@ public class HelloApplication extends Application {
                 chatArea.appendText("ChatBot: " + askTriviaQuestion() + "\n");
                 break;
             case " what is the date" :
-            case "What is the Date":
+            case "what is the date":
             case "whatisthedate":
             case "What's today's date":
             case "What date is it":
@@ -111,8 +112,18 @@ public class HelloApplication extends Application {
             case "Give me the current date and time":
                     chatArea.appendText("ChatBot:"+getCurrentDate());
                 break;
+            case "generate gmail":
+            case "Generate Gmail":
+            case "Pls Generate Gmail":
+            case "pls generate gmail":
+                chatArea.appendText("ChatBot: Please tell me your first name to generate a Gmail address.\n");
+                break;
             default:
-
+                if (userInput.startsWith("my name is")) {
+                    String name = userInput.replace("my name is", "").trim();
+                    chatArea.appendText("ChatBot: Great! Now generating your Gmail address for " + name + "...\n");
+                    chatArea.appendText("ChatBot: " + generateRandomGmail(name) + "\n");
+                }
                 if (userInput.startsWith("set budget")) {
                     chatArea.appendText("ChatBot: " + setBudget(userInput) + "\n");
                 } else if (userInput.startsWith("add expense")) {
@@ -162,7 +173,7 @@ public class HelloApplication extends Application {
     }
     public String getCurrentDate() {
         LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd--MM--yyy");
         return "Current date is: " + now.format(dateFormatter);
     }
     private boolean isArithmeticExpression(String input) {
@@ -202,7 +213,14 @@ public class HelloApplication extends Application {
             return "ChatBot: Invalid mathematical expression. Please use the format 'number operator number'.";
         }
     }
-
+    private String generateRandomGmail(String firstName) {
+        String characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        StringBuilder email = new StringBuilder(firstName.toLowerCase());
+        Random random = new Random();
+        email.append(random.nextInt(1000)); // Appending a random number to avoid duplication
+        email.append("@gmail.com");
+        return email.toString();
+    }
     public static void main(String[] args) {
         launch(args);
     }
