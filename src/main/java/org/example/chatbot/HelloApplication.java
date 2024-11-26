@@ -87,9 +87,13 @@ public class HelloApplication extends Application {
                 chatArea.appendText("ChatBot: Hello! How are you?\n");
                 break;
             case "what is your name":
-                chatArea.appendText("ChatBot: My name is ChullBull!\n");
+                chatArea.appendText("ChatBot: My name is ChatBot everyone call me ChullBull!\n");
                 break;
-            case "what is the time":
+            case  "what is the time":
+            case "Whats the time now":
+            case "Can you tell me the current time?":
+            case "What time is it":
+            case "Time please":
                 chatArea.appendText("ChatBot: " + getCurrentTime() + "\n");
                 break;
             case "set budget":
@@ -99,17 +103,25 @@ public class HelloApplication extends Application {
                 chatArea.appendText("ChatBot: " + askTriviaQuestion() + "\n");
                 break;
             case " what is the date" :
-                if(userInput.startsWith("what is the date")){
-                    System.out.println("hello");
-
-                }
+            case "What is the Date":
+            case "whatisthedate":
+            case "What's today's date":
+            case "What date is it":
+            case "Can you tell me the date":
+            case "Give me the current date and time":
+                    chatArea.appendText("ChatBot:"+getCurrentDate());
                 break;
             default:
+
                 if (userInput.startsWith("set budget")) {
                     chatArea.appendText("ChatBot: " + setBudget(userInput) + "\n");
                 } else if (userInput.startsWith("add expense")) {
                     chatArea.appendText("ChatBot: " + addExpense(userInput) + "\n");
-                } else {
+                }
+                else if (isArithmeticExpression(userInput)) {
+                    chatArea.appendText("ChatBot: " + calculateExpression(userInput) + "\n");
+                }
+                else {
                     chatArea.appendText("ChatBot: I'm not sure how to respond to that.\n");
                 }
         }
@@ -147,6 +159,48 @@ public class HelloApplication extends Application {
                 "What is the tallest mountain in the world?"
         };
         return questions[(int) (Math.random() * questions.length)];
+    }
+    public String getCurrentDate() {
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return "Current date is: " + now.format(dateFormatter);
+    }
+    private boolean isArithmeticExpression(String input) {
+        return input.matches(".*[\\d]+[\\+\\-\\*/][\\d]+.*");
+    }
+
+    private String calculateExpression(String expression) {
+        try {
+            String[] tokens = expression.split(" ");
+            double num1 = Double.parseDouble(tokens[0]);
+            String operator = tokens[1];
+            double num2 = Double.parseDouble(tokens[2]);
+
+            double result = 0;
+            switch (operator) {
+                case "+":
+                    result = num1 + num2;
+                    break;
+                case "-":
+                    result = num1 - num2;
+                    break;
+                case "*":
+                    result = num1 * num2;
+                    break;
+                case "/":
+                    if (num2 != 0) {
+                        result = num1 / num2;
+                    } else {
+                        return "ChatBot: Cannot divide by zero!";
+                    }
+                    break;
+                default:
+                    return "ChatBot: Invalid operator.";
+            }
+            return "Result: " + result;
+        } catch (Exception e) {
+            return "ChatBot: Invalid mathematical expression. Please use the format 'number operator number'.";
+        }
     }
 
     public static void main(String[] args) {
