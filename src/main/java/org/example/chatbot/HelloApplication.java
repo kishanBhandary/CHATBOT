@@ -98,6 +98,12 @@ public class HelloApplication extends Application {
             case "ask me a trivia question":
                 chatArea.appendText("ChatBot: " + askTriviaQuestion() + "\n");
                 break;
+            case " what is the date" :
+                if(userInput.startsWith("what is the date")){
+                    System.out.println("hello");
+
+                }
+                break;
             default:
                 if (userInput.startsWith("set budget")) {
                     chatArea.appendText("ChatBot: " + setBudget(userInput) + "\n");
