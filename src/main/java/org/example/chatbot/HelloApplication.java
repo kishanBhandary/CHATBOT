@@ -79,7 +79,7 @@ public class HelloApplication extends Application {
             System.exit(0);
         }
 
-        switch (userInput) {
+        switch (userInput.toLowerCase()) {
             case "hello":
             case "hi":
             case "hyy":
