@@ -117,7 +117,7 @@ public class HelloApplication extends Application {
             case " what is the date" :
             case "what is the date":
             case "whatisthedate":
-            case "What's today's date":
+            case "What's today's date ":
             case "What date is it":
             case "Can you tell me the date":
             case "Give me the current date and time":
