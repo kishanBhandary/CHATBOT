@@ -88,6 +88,9 @@ public class HelloApplication extends Application {
                 chatArea.appendText("ChatBot: Hello! How are you?\n");
                 break;
             case "what is your name":
+            case "name":
+            case "Name pls":
+            case "What is your Name":
                 chatArea.appendText("ChatBot: My name is ChatBot everyone call me ChullBull!\n");
                 break;
             case  "what is the time":
