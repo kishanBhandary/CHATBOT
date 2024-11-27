@@ -23,28 +23,28 @@ public class HelloApplication extends Application {
         TextArea chatArea = new TextArea();
         chatArea.setEditable(false);
         chatArea.setWrapText(true);
-        chatArea.setStyle("-fx-control-inner-background: rgba(0,0,0,0.91); -fx-text-fill: #ffffff; -fx-font-size: 14px;-fx-font-weight: bold;");
+        chatArea.setStyle("-fx-control-inner-background: rgb(255,255,255); -fx-text-fill: #000000; -fx-font-size: 14px;-fx-font-weight: bold;");
 
         // Input Field
         TextField inputField = new TextField();
         inputField.setPromptText("Type your message...");
-        inputField.setStyle("-fx-background-color: #1A1A1A; -fx-text-fill: #ffffff; -fx-font-size: 14px; -fx-font-weight: bold;");
+        inputField.setStyle("-fx-background-color: #ffffff; -fx-text-fill: rgb(0,0,0); -fx-font-size: 14px; -fx-font-weight: bold;");
 
         // Send Button
         Button sendButton = new Button("Send");
-        sendButton.setStyle("-fx-background-color: #ffffff; -fx-text-fill: #000000; -fx-font-size: 14px; -fx-font-weight: bold;");
+        sendButton.setStyle("-fx-background-color: #ff9100; -fx-text-fill: rgba(0,0,0,0.91); -fx-font-size: 16px; -fx-font-weight: bold;");
 
         // Input Area
         HBox inputArea = new HBox(10, inputField, sendButton);
         inputArea.setPadding(new Insets(10));
-        inputArea.setStyle("-fx-background-color: #1A1A1A;");
+        inputArea.setStyle("-fx-background-color: rgba(0,0,0,0.28);");
 
         // Add Components to Layout
         root.setCenter(chatArea);
         root.setBottom(inputArea);
 
         // Set custom border styling for the entire layout
-        root.setStyle("-fx-border-color: #ffffff; -fx-border-width: 4; -fx-border-style: solid; -fx-background-color: #000000;");
+        root.setStyle("-fx-border-color: #ffffff; -fx-border-width: 4; -fx-border-style: solid; -fx-background-color: #ffffff;");
 
         // Scene Setup
         Scene scene = new Scene(root, 600, 400);
@@ -97,7 +97,7 @@ public class HelloApplication extends Application {
             case "Whats the time now":
             case "Can you tell me the current time?":
             case "What time is it":
-            case "Time please":
+            case "Time please ":
                 chatArea.appendText("ChatBot: " + getCurrentTime() + "\n");
                 break;
             case "set budget":
