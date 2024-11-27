@@ -31,32 +31,32 @@ public class HelloApplication extends Application {
         TextArea chatArea = new TextArea();
         chatArea.setEditable(false);
         chatArea.setWrapText(true);
-        chatArea.setStyle("-fx-control-inner-background: rgb(255,255,255); -fx-text-fill: #000000; -fx-font-size: 14px;-fx-font-weight: bold;");
+        chatArea.setStyle("-fx-control-inner-background: rgb(255,255,255); -fx-text-fill: #1b5bba; -fx-font-size: 14px;-fx-font-weight: bold;");
 
         // Input Field
         TextField inputField = new TextField();
         inputField.setPromptText("Type your message...");
-        inputField.setStyle("-fx-background-color: #ffffff; -fx-text-fill: rgb(0,0,0); -fx-font-size: 14px; -fx-font-weight: bold;");
+        inputField.setStyle("-fx-background-color: rgb(255,255,255); -fx-text-fill: rgb(0,0,0); -fx-font-size: 20px; -fx-font-weight: bold;");
 
         // Send Button
         Button sendButton = new Button("Send");
-        sendButton.setStyle("-fx-background-color: #ff9100; -fx-text-fill: rgba(0,0,0,0.91); -fx-font-size: 16px; -fx-font-weight: bold;");
+        sendButton.setStyle("-fx-background-color: #5b9ef5; -fx-text-fill: rgb(255,255,255); -fx-font-size: 20px; -fx-font-weight: bold;");
 
         // Input Area
         HBox inputArea = new HBox(10, inputField, sendButton);
         inputArea.setPadding(new Insets(10));
-        inputArea.setStyle("-fx-background-color: rgba(0,0,0,0.28);");
+        inputArea.setStyle("-fx-background-color: rgb(255,255,255);");
 
         // Add Components to Layout
         root.setCenter(chatArea);
         root.setBottom(inputArea);
 
         // Set custom border styling for the entire layout
-        root.setStyle("-fx-border-color: #ffffff; -fx-border-width: 4; -fx-border-style: solid; -fx-background-color: #ffffff;");
+        root.setStyle("-fx-border-color: #ffffff; -fx-border-width: 4; -fx-border-style:  dotted; -fx-background-color: #ffffff;");
 
         // Scene Setup
         Scene scene = new Scene(root, 600, 400);
-        scene.setFill(javafx.scene.paint.Color.WHITE);
+        scene.setFill(javafx.scene.paint.Color.RED);
         primaryStage.setTitle("ChullBull ChatBot");
         primaryStage.setScene(scene);
         primaryStage.show();
