@@ -6,8 +6,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.Random;
 import java.io.BufferedReader;
@@ -31,7 +35,7 @@ public class HelloApplication extends Application {
         TextArea chatArea = new TextArea();
         chatArea.setEditable(false);
         chatArea.setWrapText(true);
-        chatArea.setStyle("-fx-control-inner-background: rgb(255,255,255); -fx-text-fill: #1b5bba; -fx-font-size: 14px;-fx-font-weight: bold;");
+        chatArea.setStyle("-fx-control-inner-background: rgb(255,255,255); -fx-text-fill: #000000; -fx-font-size: 14px;-fx-font-weight: bold;");
 
         // Input Field
         TextField inputField = new TextField();
@@ -56,7 +60,7 @@ public class HelloApplication extends Application {
 
         // Scene Setup
         Scene scene = new Scene(root, 600, 400);
-        scene.setFill(javafx.scene.paint.Color.RED);
+        scene.setFill(Color.WHITESMOKE);
         primaryStage.setTitle("ChullBull ChatBot");
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -134,7 +138,9 @@ public class HelloApplication extends Application {
                 chatArea.appendText("ChatBot: Fetching a joke...\n");
                 chatArea.appendText("ChatBot: " + fetchJoke() + "\n");
                 break;
-
+            case "show calender":
+            case "calender":
+                chatArea.appendText("ChatBot:calender"+showCurrentMonthCalendar());
             default:
                 if (userInput.startsWith("convert currency")) {
                     String[] parts = userInput.split(" ");
@@ -318,6 +324,50 @@ public class HelloApplication extends Application {
             return "Error: Unable to fetch exchange rate. Please check the currency codes.";
         }
     }
+
+
+    // Generate a text-based calendar for the given month
+    private String showCurrentMonthCalendar() {
+        LocalDate today = LocalDate.now();
+        YearMonth yearMonth = YearMonth.from(today);
+        return displayCalendar(yearMonth);
+    }
+
+    // Generate a text-based calendar for the given month
+    private String displayCalendar(YearMonth yearMonth) {
+        StringBuilder calendarBuilder = new StringBuilder();
+        calendarBuilder.append("Calendar for ").append(yearMonth.getMonth()).append(" ").append(yearMonth.getYear()).append("\n");
+        calendarBuilder.append("Sun   Mon   Tue   Wed   Thu   Fri   Sat\n");
+
+        LocalDate firstOfMonth = yearMonth.atDay(1);
+        int dayOfWeekValue = firstOfMonth.getDayOfWeek().getValue(); // 1 = Monday, 7 = Sunday
+
+        // Padding the first row with spaces to align the first day properly
+        for (int i = 1; i < dayOfWeekValue; i++) {
+            calendarBuilder.append("     "); // Adding space for the empty days
+        }
+
+        // Building the days of the month
+        int daysInMonth = yearMonth.lengthOfMonth();
+        for (int day = 1; day <= daysInMonth; day++) {
+            // Adjusting formatting for proper alignment
+            if (day < 10) {
+                calendarBuilder.append("    ").append(day).append("    ");  // Single-digit dates have extra spaces
+            } else {
+                calendarBuilder.append("    ").append(day).append("    ");   // Double-digit dates
+            }
+
+            // Start a new line after Saturday (7th day of the week)
+            if ((day + dayOfWeekValue - 1) % 7 == 0) {
+                calendarBuilder.append("\n");
+            }
+        }
+
+        // Handle the last row (if the last day of the month is not Saturday)
+        calendarBuilder.append("\n");
+        return calendarBuilder.toString();
+    }
+
 
     public static void main(String[] args) {
         launch(args);
