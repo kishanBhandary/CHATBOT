@@ -10,6 +10,14 @@ import javafx.stage.Stage;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Random;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 
 public class HelloApplication extends Application {
 
@@ -98,7 +106,6 @@ public class HelloApplication extends Application {
             case "Can you tell me the current time?":
             case "What time is it":
             case "Time please ":
-            case "kk":
                 chatArea.appendText("ChatBot: " + getCurrentTime() + "\n");
                 break;
             case "set budget":
@@ -122,7 +129,30 @@ public class HelloApplication extends Application {
             case "pls generate gmail":
                 chatArea.appendText("ChatBot: Please tell me your first name to generate a Gmail address.\n");
                 break;
+            case "tell me a joke":
+            case "joke":
+                chatArea.appendText("ChatBot: Fetching a joke...\n");
+                chatArea.appendText("ChatBot: " + fetchJoke() + "\n");
+                break;
+
             default:
+                if (userInput.startsWith("convert currency")) {
+                    String[] parts = userInput.split(" ");
+                    if (parts.length == 5) {
+                        try {
+                            double amount = Double.parseDouble(parts[2]);
+                            String fromCurrency = parts[3].toUpperCase();
+                            String toCurrency = parts[4].toUpperCase();
+                            chatArea.appendText("ChatBot: " + convertCurrency(fromCurrency, toCurrency, amount) + "\n");
+                        } catch (Exception e) {
+                            chatArea.appendText("ChatBot: Invalid format. Use 'convert currency [amount] [fromCurrency] [toCurrency]'.\n");
+                        }
+                    } else {
+                        chatArea.appendText("ChatBot: Invalid format. Use 'convert currency [amount] [fromCurrency] [toCurrency]'.\n");
+                    }
+                }
+
+
                 if (userInput.startsWith("my name is")) {
                     String name = userInput.replace("my name is", "").trim();
                     chatArea.appendText("ChatBot: Great! Now generating your Gmail address for " + name + "...\n");
@@ -225,6 +255,70 @@ public class HelloApplication extends Application {
         email.append("@gmail.com");
         return email.toString();
     }
+
+
+
+    private String fetchJoke() {
+        String apiUrl = "https://v2.jokeapi.dev/joke/Any?type=single";
+
+        try {
+            URL url = new URL(apiUrl);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.connect();
+
+            if (connection.getResponseCode() == 200) {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                StringBuilder response = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    response.append(line);
+                }
+                reader.close();
+
+                // Parse JSON response
+                JSONObject jsonResponse = new JSONObject(response.toString());
+                return jsonResponse.getString("joke");
+            } else {
+                return "Unable to fetch a joke at the moment.";
+            }
+        } catch (Exception e) {
+            return "Error: Unable to fetch a joke. Please try again.";
+        }
+    }
+    private String convertCurrency(String fromCurrency, String toCurrency, double amount) {
+        String apiKey = "d5aee23ad4641ac4e951385a";
+        String apiUrl = "https://v6.exchangerate-api.com/v6/" + apiKey + "/pair/" + fromCurrency + "/" + toCurrency;
+
+        try {
+            URL url = new URL(apiUrl);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.connect();
+
+            if (connection.getResponseCode() == 200) {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                StringBuilder response = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    response.append(line);
+                }
+                reader.close();
+
+                // Parse JSON response
+                JSONObject jsonResponse = new JSONObject(response.toString());
+                double conversionRate = jsonResponse.getDouble("conversion_rate");
+                double convertedAmount = amount * conversionRate;
+
+                return "Converted " + amount + " " + fromCurrency + " to " + convertedAmount + " " + toCurrency + ".";
+            } else {
+                return "Unable to fetch exchange rate. Please try again.";
+            }
+        } catch (Exception e) {
+            return "Error: Unable to fetch exchange rate. Please check the currency codes.";
+        }
+    }
+
     public static void main(String[] args) {
         launch(args);
     }
