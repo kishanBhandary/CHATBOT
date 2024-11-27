@@ -97,7 +97,7 @@ public class HelloApplication extends Application {
             case "Whats the time now":
             case "Can you tell me the current time?":
             case "What time is it":
-            case "Time please ":
+            case "Time please":
                 chatArea.appendText("ChatBot: " + getCurrentTime() + "\n");
                 break;
             case "set budget":
